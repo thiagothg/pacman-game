@@ -1,37 +1,27 @@
-import pygame
+import pygame.draw
+from global_variables import Global
 
-AMARELO = (255, 255, 0)
-PRETO = (0,0,0)
-VELOCIDADE = 1
-RAIO = 50
-pygame.init()
+class Pacman:
+    def __init__(self):
+        self.centro_x = 400
+        self.centro_y = 300
+        self.tamanho = 50
+        self.raio = self.tamanho // 2
 
-tela = pygame.display.set_mode((680, 480), 0)
-x = 10
-y = 10
-vel_x = VELOCIDADE
-vel_y = VELOCIDADE
-while True:
-    #calculo de regras
-    x = x + vel_x
-    y = y + vel_y
+    def pintar(self, tela):
+        #desenho o corpo do pacman
+        pygame.draw.circle(tela, Global.AMARELO, (self.centro_x, self.centro_y), self.raio, 0)
 
-    if x + RAIO> 680:
-        vel_x = - VELOCIDADE
-    elif x - RAIO < 0:
-        vel_x = VELOCIDADE
+        # desenho da boca do pacman
+        canto_boca = (self.centro_x, self.centro_y)
+        labio_superior = (self.centro_x + self.raio, self.centro_y - self.raio)
+        labio_inferior = (self.centro_x + self.raio, self.centro_y)
+        pontos = [canto_boca, labio_superior, labio_inferior]
+        pygame.draw.polygon(tela, Global.PRETO, pontos, 0)
 
-    if y + RAIO > 480:
-        vel_y = -VELOCIDADE
-    elif y - RAIO < 0:
-        vel_y = VELOCIDADE
+        olho_x = int(self.centro_x + self.raio / 3)
+        olho_y = int(self.centro_y - self.raio * 0.70)
+        olho_raio = int(self.raio / 10)
 
-    #pinta
-    tela.fill(PRETO)
-    pygame.draw.circle(tela, AMARELO, ( int(x), int(y)), RAIO, 0)
-    pygame.display.update()
+        pygame.draw.circle(tela, Global.PRETO, (olho_x, olho_y), olho_raio, 0)
 
-    #Eventos
-    for e in pygame.event.get():
-        if(e.type == pygame.QUIT):
-            exit()
