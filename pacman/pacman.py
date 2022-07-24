@@ -3,10 +3,14 @@ from global_variables import Global
 
 class Pacman:
     def __init__(self):
+        self.coluna = 1
+        self.linha = 1
         self.centro_x = 400
         self.centro_y = 300
-        self.tamanho = 50
+        self.tamanho = 800 // 30
         self.raio = self.tamanho // 2
+        self.vel_x = 0
+        self.vel_y = 0
 
     def pintar(self, tela):
         #desenho o corpo do pacman
@@ -25,3 +29,35 @@ class Pacman:
 
         pygame.draw.circle(tela, Global.PRETO, (olho_x, olho_y), olho_raio, 0)
 
+    def calcular_regras(self):
+        self.coluna = self.coluna + self.vel_x
+        self.linha = self.linha + self.vel_y
+        self.centro_x = int(self.coluna * self.tamanho + self.raio)
+        self.centro_y = int(self.linha * self.tamanho + self.raio)
+
+        # if self.centro_x + self.raio > 800:
+        #     self.vel_x = -1
+        # if self.centro_x - self.raio < 0:
+        #     self.vel_x = 1
+        #
+        # if self.centro_y + self.raio > 600:
+        #     self.vel_y = -1
+        # if self.centro_y - self.raio < 0:
+        #     self.vel_y = 1
+
+    def processar_evetos(self, eventos):
+        for e in eventos:
+            if e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_RIGHT:
+                    self.vel_x = Global.VELOCIDADE
+                elif e.key == pygame.K_LEFT:
+                    self.vel_x = -Global.VELOCIDADE
+                elif e.key == pygame.K_UP:
+                    self.vel_y = -Global.VELOCIDADE
+                elif e.key == pygame.K_DOWN:
+                    self.vel_y = Global.VELOCIDADE
+            elif e.type == pygame.KEYUP:
+                if e.key == pygame.K_RIGHT or e.key == pygame.K_LEFT:
+                    self.vel_x = 0
+                elif e.key == pygame.K_UP or e.key == pygame.K_DOWN:
+                    self.vel_y = 0
