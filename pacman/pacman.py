@@ -2,12 +2,12 @@ import pygame.draw
 from global_variables import Global
 
 class Pacman:
-    def __init__(self):
+    def __init__(self, size):
         self.coluna = 1
         self.linha = 1
         self.centro_x = 400
         self.centro_y = 300
-        self.tamanho = 800 // 30
+        self.tamanho = size
         self.raio = self.tamanho // 2
         self.vel_x = 0
         self.vel_y = 0
@@ -61,3 +61,11 @@ class Pacman:
                     self.vel_x = 0
                 elif e.key == pygame.K_UP or e.key == pygame.K_DOWN:
                     self.vel_y = 0
+
+    def processar_eventos_mouse(self, eventos):
+        delay = 1000
+        for e in eventos:
+            if e.type == pygame.MOUSEMOTION:
+                mouse_x, mouse_y = e.pos
+                self.coluna = (mouse_x - self.centro_x) / delay
+                self.linha = (mouse_y - self.centro_y) / delay

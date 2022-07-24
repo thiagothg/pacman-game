@@ -1,17 +1,15 @@
 import pygame
 from global_variables import Global
 from pacman import Pacman
+from scenario import Scenario
 
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600), 0)
-x = 10
-y = 10
-vel_x = Global.VELOCIDADE
-vel_y = Global.VELOCIDADE
 
-
-pacman = Pacman()
+size = 600 // 30
+pacman = Pacman(size)
+scenario = Scenario(size)
 
 while True:
     # calculo de regras
@@ -19,6 +17,7 @@ while True:
 
     # pinta
     screen.fill(Global.PRETO)
+    scenario.pintar(screen, pacman)
     pacman.pintar(screen)
     pygame.display.update()
     pygame.time.delay(100)
@@ -30,3 +29,4 @@ while True:
             exit()
 
         pacman.processar_evetos(eventos)
+        # pacman.processar_eventos_mouse(eventos)
