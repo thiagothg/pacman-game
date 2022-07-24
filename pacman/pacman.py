@@ -9,6 +9,8 @@ class Pacman:
         self.centro_y = 300
         self.tamanho = size
         self.raio = self.tamanho // 2
+        self.coluna_intencao = self.coluna
+        self.linha_intencao = self.linha
         self.vel_x = 0
         self.vel_y = 0
 
@@ -30,8 +32,10 @@ class Pacman:
         pygame.draw.circle(tela, Global.PRETO, (olho_x, olho_y), olho_raio, 0)
 
     def calcular_regras(self):
-        self.coluna = self.coluna + self.vel_x
-        self.linha = self.linha + self.vel_y
+        self.coluna_intencao = self.coluna + self.vel_x
+        self.linha_intencao = self.linha + self.vel_y
+        # self.coluna = self.coluna + self.vel_x
+        # self.linha = self.linha + self.vel_y
         self.centro_x = int(self.coluna * self.tamanho + self.raio)
         self.centro_y = int(self.linha * self.tamanho + self.raio)
 
@@ -69,3 +73,7 @@ class Pacman:
                 mouse_x, mouse_y = e.pos
                 self.coluna = (mouse_x - self.centro_x) / delay
                 self.linha = (mouse_y - self.centro_y) / delay
+
+    def aceitar_movimento(self):
+        self.coluna = self.coluna_intencao
+        self.linha = self.linha_intencao

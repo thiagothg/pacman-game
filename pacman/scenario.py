@@ -3,8 +3,11 @@ from global_variables import Global
 
 
 class Scenario:
-    def __init__(self, size, pacman):
+    def __init__(self, size, pacman, font):
+        self.pacman = pacman
         self.size = size
+        self.point = 2
+        self.font = font
         self.matriz = [
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
             [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
@@ -41,6 +44,8 @@ class Scenario:
         for num_line, line in enumerate(self.matriz):
             self.pintar_linha(screen, num_line, line)
 
+        self.pintar_pontos(screen)
+
     def pintar_linha(self, screen, num_line, line):
         for num_column, column in enumerate(line):
             x = num_column * self.size
@@ -54,3 +59,18 @@ class Scenario:
 
             if column == 1:
                 pygame.draw.circle(screen, Global.AMARELO, (x + half, y + half), self.size // 10, 0)
+
+    def calcular_regras(self):
+        col = self.pacman.coluna_intencao
+        lin = self.pacman.linha_intencao
+        if 0 <= col < 28 and 0 <= lin < 29:
+            if self.matriz[lin][col] != 2:
+                self.pacman.aceitar_movimento()
+                if self.matriz[lin][col] == 1:
+                    self.point += 1
+                    self.matriz[lin][col] = 0
+
+    def pintar_pontos(self, screen):
+        pontos_x = 30 * self.size
+        img_pontos = self.font.render('Score: {}'.format(self.point), True, Global.AMARELO)
+        screen.blit(img_pontos, (pontos_x, 50))
