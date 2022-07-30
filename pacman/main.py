@@ -2,6 +2,7 @@ import pygame
 from global_variables import Global
 from pacman import Pacman
 from scenario import Scenario
+from ghost import Ghost
 
 pygame.init()
 
@@ -10,25 +11,24 @@ font = pygame.font.SysFont('arial', 24, True, False)
 
 size = 600 // 30
 pacman = Pacman(size)
+blinky = Ghost(Global.VERMELHO, size)
 scenario = Scenario(size, pacman, font)
 
 while True:
     # calculo de regras
-    pacman.calcular_regras()
-    scenario.calcular_regras()
+    pacman.process_rules()
+    scenario.process_rules()
 
     # pinta
     screen.fill(Global.PRETO)
-    scenario.pintar(screen)
-    pacman.pintar(screen)
+    scenario.draw(screen)
+    pacman.draw(screen)
+    blinky.draw(screen)
     pygame.display.update()
     pygame.time.delay(100)
 
     # Eventos
     eventos = pygame.event.get()
-    for e in eventos:
-        if e.type == pygame.QUIT:
-            exit()
-
-        pacman.processar_evetos(eventos)
-        # pacman.processar_eventos_mouse(eventos)
+    pacman.process_events(eventos)
+    scenario.process_events(eventos)
+    # pacman.processar_eventos_mouse(eventos)

@@ -1,7 +1,9 @@
 import pygame.draw
 from global_variables import Global
+from game import Game
 
-class Pacman:
+
+class Pacman(Game):
     def __init__(self, size):
         self.coluna = 1
         self.linha = 1
@@ -14,7 +16,7 @@ class Pacman:
         self.vel_x = 0
         self.vel_y = 0
 
-    def pintar(self, tela):
+    def draw(self, tela):
         #desenho o corpo do pacman
         pygame.draw.circle(tela, Global.AMARELO, (self.centro_x, self.centro_y), self.raio, 0)
 
@@ -31,26 +33,15 @@ class Pacman:
 
         pygame.draw.circle(tela, Global.PRETO, (olho_x, olho_y), olho_raio, 0)
 
-    def calcular_regras(self):
+    def process_rules(self):
         self.coluna_intencao = self.coluna + self.vel_x
         self.linha_intencao = self.linha + self.vel_y
-        # self.coluna = self.coluna + self.vel_x
-        # self.linha = self.linha + self.vel_y
+
         self.centro_x = int(self.coluna * self.tamanho + self.raio)
         self.centro_y = int(self.linha * self.tamanho + self.raio)
 
-        # if self.centro_x + self.raio > 800:
-        #     self.vel_x = -1
-        # if self.centro_x - self.raio < 0:
-        #     self.vel_x = 1
-        #
-        # if self.centro_y + self.raio > 600:
-        #     self.vel_y = -1
-        # if self.centro_y - self.raio < 0:
-        #     self.vel_y = 1
-
-    def processar_evetos(self, eventos):
-        for e in eventos:
+    def process_events(self, events):
+        for e in events:
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_RIGHT:
                     self.vel_x = Global.VELOCIDADE
